@@ -1,15 +1,21 @@
 package com.sd.myandroid.activity_event;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 import com.sd.lib.eventact.observer.ActivityCreatedObserver;
 import com.sd.lib.eventact.observer.ActivityDestroyedObserver;
+import com.sd.lib.eventact.observer.ActivityKeyEventObserver;
 import com.sd.lib.eventact.observer.ActivityPausedObserver;
+import com.sd.lib.eventact.observer.ActivityResultObserver;
 import com.sd.lib.eventact.observer.ActivityResumedObserver;
 import com.sd.lib.eventact.observer.ActivityStartedObserver;
 import com.sd.lib.eventact.observer.ActivityStoppedObserver;
+import com.sd.lib.eventact.observer.ActivityTouchEventObserver;
 
 public class MainActivity extends BaseActivity
 {
@@ -24,6 +30,9 @@ public class MainActivity extends BaseActivity
         mActivityPausedObserver.register();
         mActivityStoppedObserver.register();
         mActivityDestroyedObserver.register();
+        mActivityResultObserver.register();
+        mActivityTouchEventObserver.register();
+        mActivityKeyEventObserver.register();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,6 +89,35 @@ public class MainActivity extends BaseActivity
         public void onActivityDestroyed(Activity activity)
         {
             Log.i(TAG, "onActivityDestroyed");
+        }
+    };
+
+    private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver(this)
+    {
+        @Override
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
+        {
+            Log.i(TAG, "onActivityResult:" + requestCode + "," + resultCode + "," + data);
+        }
+    };
+
+    private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver(this)
+    {
+        @Override
+        public boolean onActivityDispatchTouchEvent(Activity activity, MotionEvent event)
+        {
+            Log.i(TAG, "onActivityDispatchTouchEvent:" + event.getAction());
+            return false;
+        }
+    };
+
+    private final ActivityKeyEventObserver mActivityKeyEventObserver = new ActivityKeyEventObserver(this)
+    {
+        @Override
+        public boolean onActivityDispatchKeyEvent(Activity activity, KeyEvent event)
+        {
+            Log.i(TAG, "onActivityDispatchKeyEvent:" + event.getAction());
+            return false;
         }
     };
 }
