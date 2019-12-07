@@ -14,6 +14,7 @@ import com.sd.lib.eventact.observer.ActivityKeyEventObserver;
 import com.sd.lib.eventact.observer.ActivityPausedObserver;
 import com.sd.lib.eventact.observer.ActivityResultObserver;
 import com.sd.lib.eventact.observer.ActivityResumedObserver;
+import com.sd.lib.eventact.observer.ActivitySaveInstanceStateObserver;
 import com.sd.lib.eventact.observer.ActivityStartedObserver;
 import com.sd.lib.eventact.observer.ActivityStoppedObserver;
 import com.sd.lib.eventact.observer.ActivityTouchEventObserver;
@@ -31,6 +32,7 @@ public class MainActivity extends BaseActivity
         mActivityPausedObserver.register();
         mActivityStoppedObserver.register();
         mActivityDestroyedObserver.register();
+        mActivitySaveInstanceStateObserver.register();
         mActivityResultObserver.register();
         mActivityTouchEventObserver.register();
         mActivityKeyEventObserver.register();
@@ -100,6 +102,15 @@ public class MainActivity extends BaseActivity
         public void onActivityDestroyed(Activity activity)
         {
             Log.i(TAG, "onActivityDestroyed");
+        }
+    };
+
+    private final ActivitySaveInstanceStateObserver mActivitySaveInstanceStateObserver = new ActivitySaveInstanceStateObserver(this)
+    {
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState)
+        {
+            Log.i(TAG, "mActivitySaveInstanceStateObserver");
         }
     };
 
