@@ -25,7 +25,7 @@ public interface ActivityEventDispatcher
 
     void dispatch_onActivityResult(int requestCode, int resultCode, Intent data);
 
-    boolean dispatch_dispatchKeyEvent(KeyEvent event);
-
     boolean dispatch_dispatchTouchEvent(MotionEvent event);
+
+    boolean dispatch_dispatchKeyEvent(KeyEvent event);
 }

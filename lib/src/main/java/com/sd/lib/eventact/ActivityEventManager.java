@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import com.sd.lib.eventact.callback.ActivityCreatedCallback;
+import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
 
 import java.lang.ref.WeakReference;
@@ -105,7 +106,23 @@ class ActivityEventManager
         @Override
         public void dispatch_onDestroy()
         {
+            synchronized (ActivityEventManager.this)
+            {
+                final Activity activity = mActivity.get();
+                if (activity == null)
+                    return;
+                if (mCallbackRegister == null)
+                    return;
 
+                final Collection<ActivityDestroyedCallback> callbacks = mCallbackRegister.get(activity, ActivityDestroyedCallback.class);
+                if (callbacks == null)
+                    return;
+
+                for (ActivityDestroyedCallback item : callbacks)
+                {
+                    item.onActivityDestroyed(activity);
+                }
+            }
         }
 
         @Override
@@ -127,13 +144,13 @@ class ActivityEventManager
         }
 
         @Override
-        public boolean dispatch_dispatchKeyEvent(KeyEvent event)
+        public boolean dispatch_dispatchTouchEvent(MotionEvent event)
         {
             return false;
         }
 
         @Override
-        public boolean dispatch_dispatchTouchEvent(MotionEvent event)
+        public boolean dispatch_dispatchKeyEvent(KeyEvent event)
         {
             return false;
         }
