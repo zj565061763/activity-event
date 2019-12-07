@@ -73,6 +73,7 @@ class CallbackRegister
             return;
 
         callbacks.remove(callback);
+
         if (callbacks.isEmpty())
         {
             mapActivityCallback.remove(callbackClass);
