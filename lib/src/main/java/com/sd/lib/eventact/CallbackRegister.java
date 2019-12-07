@@ -132,17 +132,30 @@ class CallbackRegister
         return new ArrayList<>(callbacks);
     }
 
-    public void removeActivity(Activity activity)
+    public boolean removeActivity(Activity activity)
     {
         if (activity == null)
-            return;
+            return false;
 
         if (mMapCallback == null)
-            return;
+            return false;
 
-        mMapCallback.remove(activity);
+        final boolean result = mMapCallback.remove(activity) != null;
+
         if (mMapCallback.isEmpty())
             mMapCallback = null;
+
+        if (isDebug())
+        {
+            final StringBuilder builder = new StringBuilder();
+            builder.append("----- removeActivity ").append("\r\n");
+            builder.append("result:").append(result).append("\r\n");
+            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
+            Log.i(CallbackRegister.class.getName(), builder.toString());
+        }
+
+        return result;
     }
 
     public boolean isEmpty()
