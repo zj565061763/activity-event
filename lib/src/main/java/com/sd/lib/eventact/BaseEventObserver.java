@@ -24,6 +24,9 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         mActivity = new WeakReference<>(activity);
         mCallbackClass = (Class<T>) getGenericType();
 
+        if (mCallbackClass == ActivityEventCallback.class)
+            throw new RuntimeException("callback class must not be " + ActivityEventCallback.class);
+
         if (!mCallbackClass.isAssignableFrom(getClass()))
             throw new RuntimeException(mCallbackClass + " is not assignable from " + getClass());
     }
