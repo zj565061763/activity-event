@@ -56,17 +56,33 @@ class CallbackRegister
         return callbacks.add(callback);
     }
 
-    public <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> clazz, T callback)
+    public <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> callbackClass, T callback)
     {
-        if (activity == null || clazz == null || callback == null)
+        if (activity == null || callbackClass == null || callback == null)
             return;
 
-        if (mMapCallback == null || mMapCallback.isEmpty())
+        if (mMapCallback == null)
             return;
 
-        final Collection<T> callbacks = getCallbacks(activity, clazz);
-        if (callbacks != null)
-            callbacks.remove(activity);
+        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapActivityCallback = mMapCallback.get(activity);
+        if (mapActivityCallback == null)
+            return;
+
+        final Collection callbacks = mapActivityCallback.get(callbackClass);
+        if (callbacks == null)
+            return;
+
+        callbacks.remove(callback);
+        if (callbacks.isEmpty())
+        {
+            mapActivityCallback.remove(callbackClass);
+            if (mapActivityCallback.isEmpty())
+            {
+                mMapCallback.remove(activity);
+                if (mMapCallback.isEmpty())
+                    mMapCallback = null;
+            }
+        }
     }
 
     public <T extends ActivityEventCallback> Collection<T> get(Activity activity, Class<T> clazz)
