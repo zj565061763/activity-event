@@ -10,13 +10,13 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class BaseActivityEventObserver<T extends ActivityEventCallback> implements ActivityEventObserver
+public abstract class BaseEventObserver<T extends ActivityEventCallback> implements ActivityEventObserver
 {
     private final WeakReference<Activity> mActivity;
     private final Class<T> mCallbackClass;
     private final InternalDestroyedObserver mDestroyedObserver = new InternalDestroyedObserver();
 
-    public BaseActivityEventObserver(Activity activity)
+    public BaseEventObserver(Activity activity)
     {
         if (activity == null)
             throw new IllegalArgumentException("activity is null");
@@ -70,7 +70,7 @@ public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
         public void onActivityDestroyed(Activity activity)
         {
             unregister();
-            BaseActivityEventObserver.this.unregister();
+            BaseEventObserver.this.unregister();
         }
     }
 
@@ -88,7 +88,7 @@ public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
         Class<?> clazz = getClass();
         while (true)
         {
-            if (clazz.getSuperclass() == BaseActivityEventObserver.class)
+            if (clazz.getSuperclass() == BaseEventObserver.class)
                 return clazz;
 
             clazz = clazz.getSuperclass();
