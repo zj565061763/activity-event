@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.sd.lib.eventact.observer.ActivityCreatedObserver;
 import com.sd.lib.eventact.observer.ActivityDestroyedObserver;
@@ -36,6 +37,16 @@ public class MainActivity extends BaseActivity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                final Intent intent = new Intent(MainActivity.this, ResultActivity.class);
+                startActivityForResult(intent, 99);
+            }
+        });
     }
 
     private final ActivityCreatedObserver mActivityCreatedObserver = new ActivityCreatedObserver(this)
