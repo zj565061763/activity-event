@@ -64,6 +64,7 @@ class ActivityEventManager
     {
         if (mCallbackRegister == null)
             return null;
+
         return mCallbackRegister.get(activity, callbackClass);
     }
 
