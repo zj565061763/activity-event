@@ -28,9 +28,9 @@ class CallbackRegister
         return (Collection<T>) callbacks;
     }
 
-    public <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
+    public <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> callbackClass, T callback)
     {
-        if (activity == null || clazz == null || callback == null)
+        if (activity == null || callbackClass == null || callback == null)
             return false;
 
         if (activity.isFinishing())
@@ -39,14 +39,18 @@ class CallbackRegister
         if (mMapCallback == null)
             mMapCallback = new WeakHashMap<>();
 
-        Collection<T> callbacks = getCallbacks(activity, clazz);
+        Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapActivityCallback = mMapCallback.get(activity);
+        if (mapActivityCallback == null)
+        {
+            mapActivityCallback = new HashMap<>();
+            mMapCallback.put(activity, mapActivityCallback);
+        }
+
+        Collection callbacks = mapActivityCallback.get(callbackClass);
         if (callbacks == null)
         {
-            final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> map = new HashMap<>();
-            mMapCallback.put(activity, map);
-
             callbacks = new LinkedHashSet<>();
-            map.put(clazz, callbacks);
+            mapActivityCallback.put(callbackClass, callbacks);
         }
 
         return callbacks.add(callback);
