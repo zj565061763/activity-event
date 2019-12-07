@@ -5,22 +5,21 @@ import android.app.Activity;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
 {
     private final WeakReference<Activity> mActivity;
     private final Class<T> mCallbackClass;
 
-    public BaseActivityEventObserver(Activity activity, Class<T> callbackClass)
+    public BaseActivityEventObserver(Activity activity)
     {
         if (activity == null)
             throw new IllegalArgumentException("activity is null");
 
-        if (callbackClass == null)
-            throw new IllegalArgumentException("callbackClass is null");
-
         mActivity = new WeakReference<>(activity);
-        mCallbackClass = callbackClass;
+        mCallbackClass = (Class<T>) getGenericType();
 
         if (!mCallbackClass.isAssignableFrom(getClass()))
             throw new RuntimeException(mCallbackClass + " is not assignable from " + getClass());
@@ -47,5 +46,26 @@ public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
     public final void unregister()
     {
         ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
+    }
+
+    private Type getGenericType()
+    {
+        final Class<?> targetClass = findTargetClass();
+
+        final ParameterizedType parameterizedType = (ParameterizedType) targetClass.getGenericSuperclass();
+        final Type[] types = parameterizedType.getActualTypeArguments();
+        return types[0];
+    }
+
+    private Class<?> findTargetClass()
+    {
+        Class<?> clazz = getClass();
+        while (true)
+        {
+            if (clazz.getSuperclass() == BaseActivityEventObserver.class)
+                return clazz;
+
+            clazz = clazz.getSuperclass();
+        }
     }
 }
