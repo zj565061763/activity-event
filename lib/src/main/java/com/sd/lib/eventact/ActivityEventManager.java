@@ -9,13 +9,16 @@ import android.view.MotionEvent;
 import com.sd.lib.eventact.callback.ActivityCreatedCallback;
 import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
+import com.sd.lib.eventact.callback.ActivityPausedCallback;
+import com.sd.lib.eventact.callback.ActivityResumedCallback;
+import com.sd.lib.eventact.callback.ActivityStartedCallback;
+import com.sd.lib.eventact.callback.ActivityStoppedCallback;
 
-import java.lang.ref.WeakReference;
 import java.util.Collection;
 
 class ActivityEventManager
 {
-    private static final ActivityEventManager INSTANCE = new ActivityEventManager();
+    private static ActivityEventManager sInstance = null;
 
     private ActivityEventManager()
     {
@@ -23,26 +26,40 @@ class ActivityEventManager
 
     public static ActivityEventManager getInstance()
     {
-        return INSTANCE;
+        if (sInstance == null)
+        {
+            synchronized (ActivityEventManager.class)
+            {
+                if (sInstance == null)
+                    sInstance = new ActivityEventManager();
+            }
+        }
+        return sInstance;
     }
 
     private CallbackRegister mCallbackRegister;
 
-    public synchronized <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
+    public <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
     {
-        if (mCallbackRegister == null)
-            mCallbackRegister = new CallbackRegister();
+        synchronized (ActivityEventManager.this)
+        {
+            if (mCallbackRegister == null)
+                mCallbackRegister = new CallbackRegister();
 
-        return mCallbackRegister.register(activity, clazz, callback);
+            return mCallbackRegister.register(activity, clazz, callback);
+        }
     }
 
-    public synchronized <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> clazz, T callback)
+    public <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> clazz, T callback)
     {
-        if (mCallbackRegister != null)
+        synchronized (ActivityEventManager.this)
         {
-            mCallbackRegister.unregister(activity, clazz, callback);
-            if (mCallbackRegister.isEmpty())
-                mCallbackRegister = null;
+            if (mCallbackRegister != null)
+            {
+                mCallbackRegister.unregister(activity, clazz, callback);
+                if (mCallbackRegister.isEmpty())
+                    mCallbackRegister = null;
+            }
         }
     }
 
@@ -53,80 +70,100 @@ class ActivityEventManager
 
     private final class InternalActivityEventDispatcher implements ActivityEventDispatcher
     {
-        private final WeakReference<Activity> mActivity;
+        private final Activity mActivity;
 
         public InternalActivityEventDispatcher(Activity activity)
         {
             if (activity == null)
                 throw new IllegalArgumentException("activity is null");
-            mActivity = new WeakReference<>(activity);
+            mActivity = activity;
+        }
+
+        public <T extends ActivityEventCallback> Collection<T> getCallbacks(Class<T> callbackClass)
+        {
+            synchronized (ActivityEventManager.this)
+            {
+                if (mCallbackRegister == null)
+                    return null;
+                return mCallbackRegister.get(mActivity, callbackClass);
+            }
         }
 
         @Override
         public void dispatch_onCreate(Bundle savedInstanceState)
         {
-            synchronized (ActivityEventManager.this)
+            final Collection<ActivityCreatedCallback> callbacks = getCallbacks(ActivityCreatedCallback.class);
+            if (callbacks == null)
+                return;
+
+            for (ActivityCreatedCallback item : callbacks)
             {
-                final Activity activity = mActivity.get();
-                if (activity == null)
-                    return;
-                if (mCallbackRegister == null)
-                    return;
-
-                final Collection<ActivityCreatedCallback> callbacks = mCallbackRegister.get(activity, ActivityCreatedCallback.class);
-                if (callbacks == null)
-                    return;
-
-                for (ActivityCreatedCallback item : callbacks)
-                {
-                    item.onActivityCreated(activity, savedInstanceState);
-                }
+                item.onActivityCreated(mActivity, savedInstanceState);
             }
         }
 
         @Override
         public void dispatch_onStart()
         {
+            final Collection<ActivityStartedCallback> callbacks = getCallbacks(ActivityStartedCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityStartedCallback item : callbacks)
+            {
+                item.onActivityStarted(mActivity);
+            }
         }
 
         @Override
         public void dispatch_onResume()
         {
+            final Collection<ActivityResumedCallback> callbacks = getCallbacks(ActivityResumedCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityResumedCallback item : callbacks)
+            {
+                item.onActivityResumed(mActivity);
+            }
         }
 
         @Override
         public void dispatch_onPause()
         {
+            final Collection<ActivityPausedCallback> callbacks = getCallbacks(ActivityPausedCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityPausedCallback item : callbacks)
+            {
+                item.onActivityPaused(mActivity);
+            }
         }
 
         @Override
         public void dispatch_onStop()
         {
+            final Collection<ActivityStoppedCallback> callbacks = getCallbacks(ActivityStoppedCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityStoppedCallback item : callbacks)
+            {
+                item.onActivityStopped(mActivity);
+            }
         }
 
         @Override
         public void dispatch_onDestroy()
         {
-            synchronized (ActivityEventManager.this)
+            final Collection<ActivityDestroyedCallback> callbacks = getCallbacks(ActivityDestroyedCallback.class);
+            if (callbacks == null)
+                return;
+
+            for (ActivityDestroyedCallback item : callbacks)
             {
-                final Activity activity = mActivity.get();
-                if (activity == null)
-                    return;
-                if (mCallbackRegister == null)
-                    return;
-
-                final Collection<ActivityDestroyedCallback> callbacks = mCallbackRegister.get(activity, ActivityDestroyedCallback.class);
-                if (callbacks == null)
-                    return;
-
-                for (ActivityDestroyedCallback item : callbacks)
-                {
-                    item.onActivityDestroyed(activity);
-                }
+                item.onActivityDestroyed(mActivity);
             }
         }
 
