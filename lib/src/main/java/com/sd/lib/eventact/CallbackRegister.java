@@ -50,14 +50,17 @@ class CallbackRegister
 
         if (isDebug())
         {
-            Log.i(CallbackRegister.class.getName(),
-                    "+++++ register " + "\r\n" +
-                            "result:" + result + "\r\n" +
-                            "size:" + mMapCallback.size() + "," + mapActivityCallback.size() + "," + callbacks.size() + "\r\n" +
-                            "activity:" + activity + "\r\n" +
-                            "callbackClass:" + callbackClass + "\r\n" +
-                            "callback:" + callback
-            );
+            final StringBuilder builder = new StringBuilder();
+            builder.append("+++++ register ").append("\r\n");
+            builder.append("result:").append(result).append("\r\n");
+            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
+            builder.append("callback:").append(callback).append("\r\n");
+            builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
+            builder.append("size callback type:").append(mapActivityCallback.size()).append("\r\n");
+            builder.append("size callback:").append(callbacks.size()).append("\r\n");
+            builder.append("holder:").append(mapActivityCallback);
+            Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
         return result;
@@ -94,14 +97,17 @@ class CallbackRegister
 
         if (isDebug())
         {
-            Log.i(CallbackRegister.class.getName(),
-                    "----- unregister " + "\r\n" +
-                            "result:" + result + "\r\n" +
-                            "size:" + (mMapCallback != null ? mMapCallback.size() : 0) + "," + mapActivityCallback.size() + "," + callbacks.size() + "\r\n" +
-                            "activity:" + activity + "\r\n" +
-                            "callbackClass:" + callbackClass + "\r\n" +
-                            "callback:" + callback
-            );
+            final StringBuilder builder = new StringBuilder();
+            builder.append("----- unregister ").append("\r\n");
+            builder.append("result:").append(result).append("\r\n");
+            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
+            builder.append("callback:").append(callback).append("\r\n");
+            builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
+            builder.append("size callback type:").append(mapActivityCallback.size()).append("\r\n");
+            builder.append("size callback:").append(callbacks.size()).append("\r\n");
+            builder.append("holder:").append(mapActivityCallback);
+            Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
         return result;
