@@ -36,10 +36,14 @@ public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
     @Override
     public final boolean register()
     {
-        if (mDestroyedObserver.register())
-            return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
-
-        return false;
+        boolean register = ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+        if (register)
+        {
+            register = mDestroyedObserver.register();
+            if (!register)
+                unregister();
+        }
+        return register;
     }
 
     @Override
