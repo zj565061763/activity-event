@@ -9,10 +9,14 @@ import android.view.MotionEvent;
 import com.sd.lib.eventact.callback.ActivityCreatedCallback;
 import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
+import com.sd.lib.eventact.callback.ActivityInstanceStateCallback;
+import com.sd.lib.eventact.callback.ActivityKeyEventCallback;
 import com.sd.lib.eventact.callback.ActivityPausedCallback;
+import com.sd.lib.eventact.callback.ActivityResultCallback;
 import com.sd.lib.eventact.callback.ActivityResumedCallback;
 import com.sd.lib.eventact.callback.ActivityStartedCallback;
 import com.sd.lib.eventact.callback.ActivityStoppedCallback;
+import com.sd.lib.eventact.callback.ActivityTouchEventCallback;
 
 import java.util.Collection;
 
@@ -170,30 +174,69 @@ class ActivityEventManager
         @Override
         public void dispatch_onSaveInstanceState(Bundle outState)
         {
+            final Collection<ActivityInstanceStateCallback> callbacks = getCallbacks(ActivityInstanceStateCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityInstanceStateCallback item : callbacks)
+            {
+                item.onActivitySaveInstanceState(mActivity, outState);
+            }
         }
 
         @Override
         public void dispatch_onRestoreInstanceState(Bundle savedInstanceState)
         {
+            final Collection<ActivityInstanceStateCallback> callbacks = getCallbacks(ActivityInstanceStateCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityInstanceStateCallback item : callbacks)
+            {
+                item.onActivityRestoreInstanceState(mActivity, savedInstanceState);
+            }
         }
 
         @Override
         public void dispatch_onActivityResult(int requestCode, int resultCode, Intent data)
         {
+            final Collection<ActivityResultCallback> callbacks = getCallbacks(ActivityResultCallback.class);
+            if (callbacks == null)
+                return;
 
+            for (ActivityResultCallback item : callbacks)
+            {
+                item.onActivityResult(mActivity, requestCode, resultCode, data);
+            }
         }
 
         @Override
         public boolean dispatch_dispatchTouchEvent(MotionEvent event)
         {
+            final Collection<ActivityTouchEventCallback> callbacks = getCallbacks(ActivityTouchEventCallback.class);
+            if (callbacks == null)
+                return false;
+
+            for (ActivityTouchEventCallback item : callbacks)
+            {
+                if (item.onActivityDispatchTouchEvent(mActivity, event))
+                    return true;
+            }
             return false;
         }
 
         @Override
         public boolean dispatch_dispatchKeyEvent(KeyEvent event)
         {
+            final Collection<ActivityKeyEventCallback> callbacks = getCallbacks(ActivityKeyEventCallback.class);
+            if (callbacks == null)
+                return false;
+
+            for (ActivityKeyEventCallback item : callbacks)
+            {
+                if (item.onActivityDispatchKeyEvent(mActivity, event))
+                    return true;
+            }
             return false;
         }
     }
