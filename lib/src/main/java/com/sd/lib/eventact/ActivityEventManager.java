@@ -11,11 +11,11 @@ import android.view.MotionEvent;
 import com.sd.lib.eventact.callback.ActivityCreatedCallback;
 import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
-import com.sd.lib.eventact.callback.ActivityInstanceStateCallback;
 import com.sd.lib.eventact.callback.ActivityKeyEventCallback;
 import com.sd.lib.eventact.callback.ActivityPausedCallback;
 import com.sd.lib.eventact.callback.ActivityResultCallback;
 import com.sd.lib.eventact.callback.ActivityResumedCallback;
+import com.sd.lib.eventact.callback.ActivitySaveInstanceStateCallback;
 import com.sd.lib.eventact.callback.ActivityStartedCallback;
 import com.sd.lib.eventact.callback.ActivityStoppedCallback;
 import com.sd.lib.eventact.callback.ActivityTouchEventCallback;
@@ -263,11 +263,11 @@ class ActivityEventManager
 
         public void dispatch_onSaveInstanceState(Activity activity, Bundle outState)
         {
-            final Collection<ActivityInstanceStateCallback> callbacks = getCallbacks(activity, ActivityInstanceStateCallback.class);
+            final Collection<ActivitySaveInstanceStateCallback> callbacks = getCallbacks(activity, ActivitySaveInstanceStateCallback.class);
             if (callbacks == null)
                 return;
 
-            for (ActivityInstanceStateCallback item : callbacks)
+            for (ActivitySaveInstanceStateCallback item : callbacks)
             {
                 item.onActivitySaveInstanceState(activity, outState);
             }
