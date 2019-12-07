@@ -4,8 +4,8 @@ import android.app.Activity;
 
 import com.sd.lib.eventact.callback.ActivityEventCallback;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -89,7 +89,7 @@ class CallbackRegister
         if (callbacks == null)
             return null;
 
-        return Collections.unmodifiableCollection(callbacks);
+        return new ArrayList<>(callbacks);
     }
 
     public boolean isEmpty()
