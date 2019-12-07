@@ -22,7 +22,7 @@ import java.util.Collection;
 
 class ActivityEventManager
 {
-    private static ActivityEventManager sInstance = null;
+    private static final ActivityEventManager INSTANCE = new ActivityEventManager();
 
     private ActivityEventManager()
     {
@@ -30,15 +30,7 @@ class ActivityEventManager
 
     public static ActivityEventManager getInstance()
     {
-        if (sInstance == null)
-        {
-            synchronized (ActivityEventManager.class)
-            {
-                if (sInstance == null)
-                    sInstance = new ActivityEventManager();
-            }
-        }
-        return sInstance;
+        return INSTANCE;
     }
 
     private CallbackRegister mCallbackRegister;
