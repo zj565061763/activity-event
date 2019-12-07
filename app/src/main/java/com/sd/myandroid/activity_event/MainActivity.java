@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState)
         {
-            Log.i(TAG, "mActivitySaveInstanceStateObserver");
+            Log.i(TAG, "onActivitySaveInstanceState");
         }
     };
 
