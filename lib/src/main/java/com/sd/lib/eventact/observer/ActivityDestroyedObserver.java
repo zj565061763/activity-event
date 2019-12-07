@@ -9,6 +9,6 @@ public abstract class ActivityDestroyedObserver extends BaseActivityEventObserve
 {
     public ActivityDestroyedObserver(Activity activity)
     {
-        super(activity);
+        super(activity, ActivityDestroyedCallback.class);
     }
 }
