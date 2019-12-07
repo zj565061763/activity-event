@@ -11,4 +11,7 @@ public abstract class ActivityDestroyedObserver extends BaseEventObserver<Activi
     {
         super(activity);
     }
+
+    @Override
+    public abstract void onActivityDestroyed(Activity activity);
 }

@@ -59,6 +59,10 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         mDestroyedObserver.unregister();
     }
 
+    protected void onActivityDestroyed(Activity activity)
+    {
+    }
+
     private Activity checkActivity()
     {
         final Activity activity = getActivity();
@@ -110,7 +114,10 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         public void onActivityDestroyed(Activity activity)
         {
             if (activity == checkActivity())
+            {
+                BaseEventObserver.this.onActivityDestroyed(activity);
                 BaseEventObserver.this.unregister();
+            }
         }
 
         @Override
