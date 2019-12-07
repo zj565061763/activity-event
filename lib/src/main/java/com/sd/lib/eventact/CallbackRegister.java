@@ -15,19 +15,6 @@ class CallbackRegister
 {
     private Map<Activity, Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>>> mMapCallback;
 
-    private <T extends ActivityEventCallback> Collection<T> getCallbacks(Activity activity, Class<T> clazz)
-    {
-        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> map = mMapCallback.get(activity);
-        if (map == null)
-            return null;
-
-        final Collection<? extends ActivityEventCallback> callbacks = map.get(clazz);
-        if (callbacks == null || callbacks.isEmpty())
-            return null;
-
-        return (Collection<T>) callbacks;
-    }
-
     public <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> callbackClass, T callback)
     {
         if (activity == null || callbackClass == null || callback == null)
