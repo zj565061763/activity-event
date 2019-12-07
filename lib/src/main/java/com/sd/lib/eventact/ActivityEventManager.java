@@ -67,6 +67,16 @@ class ActivityEventManager
         return mCallbackRegister.get(activity, callbackClass);
     }
 
+    private synchronized void removeActivityCallback(Activity activity)
+    {
+        if (mCallbackRegister == null)
+            return;
+
+        mCallbackRegister.removeActivity(activity);
+        if (mCallbackRegister.isEmpty())
+            mCallbackRegister = null;
+    }
+
     private synchronized void initSystemActivityEventDispatcher(Activity activity)
     {
         if (activity == null)
@@ -246,6 +256,8 @@ class ActivityEventManager
             {
                 item.onActivityDestroyed(activity);
             }
+
+            removeActivityCallback(activity);
         }
 
         public void dispatch_onSaveInstanceState(Activity activity, Bundle outState)

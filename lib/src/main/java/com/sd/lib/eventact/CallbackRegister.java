@@ -132,6 +132,19 @@ class CallbackRegister
         return new ArrayList<>(callbacks);
     }
 
+    public void removeActivity(Activity activity)
+    {
+        if (activity == null)
+            return;
+
+        if (mMapCallback == null)
+            return;
+
+        mMapCallback.remove(activity);
+        if (mMapCallback.isEmpty())
+            mMapCallback = null;
+    }
+
     public boolean isEmpty()
     {
         return mMapCallback == null || mMapCallback.isEmpty();
