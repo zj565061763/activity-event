@@ -2,16 +2,19 @@ package com.sd.lib.eventact;
 
 import android.app.Activity;
 
+import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
+import com.sd.lib.eventact.observer.ActivityEventObserver;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
+public abstract class BaseActivityEventObserver<T extends ActivityEventCallback> implements ActivityEventObserver
 {
     private final WeakReference<Activity> mActivity;
     private final Class<T> mCallbackClass;
+    private final InternalDestroyedObserver mDestroyedObserver = new InternalDestroyedObserver();
 
     public BaseActivityEventObserver(Activity activity)
     {
@@ -30,22 +33,41 @@ public abstract class BaseActivityEventObserver<T extends ActivityEventCallback>
         return mActivity.get();
     }
 
-    /**
-     * 注册
-     *
-     * @return
-     */
+    @Override
     public final boolean register()
     {
-        return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+        if (mDestroyedObserver.register())
+            return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+
+        return false;
     }
 
-    /**
-     * 取消注册
-     */
+    @Override
     public final void unregister()
     {
         ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
+    }
+
+    private final class InternalDestroyedObserver implements ActivityEventObserver, ActivityDestroyedCallback
+    {
+        @Override
+        public boolean register()
+        {
+            return ActivityEventManager.getInstance().register(getActivity(), ActivityDestroyedCallback.class, this);
+        }
+
+        @Override
+        public void unregister()
+        {
+            ActivityEventManager.getInstance().unregister(getActivity(), ActivityDestroyedCallback.class, this);
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity)
+        {
+            unregister();
+            BaseActivityEventObserver.this.unregister();
+        }
     }
 
     private Type getGenericType()
