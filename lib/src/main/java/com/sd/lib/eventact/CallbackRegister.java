@@ -91,4 +91,9 @@ class CallbackRegister
 
         return Collections.unmodifiableCollection(callbacks);
     }
+
+    public boolean isEmpty()
+    {
+        return mMapCallback == null || mMapCallback.isEmpty();
+    }
 }

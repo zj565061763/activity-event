@@ -32,13 +32,18 @@ class ActivityEventManager
     {
         if (mCallbackRegister == null)
             mCallbackRegister = new CallbackRegister();
+
         return mCallbackRegister.register(activity, clazz, callback);
     }
 
     public synchronized <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> clazz, T callback)
     {
         if (mCallbackRegister != null)
+        {
             mCallbackRegister.unregister(activity, clazz, callback);
+            if (mCallbackRegister.isEmpty())
+                mCallbackRegister = null;
+        }
     }
 
     public ActivityEventDispatcher newActivityEventDispatcher(Activity activity)
