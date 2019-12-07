@@ -1,8 +1,9 @@
 package com.sd.lib.eventact;
 
 import android.app.Activity;
+import android.app.Application;
+import android.os.Bundle;
 
-import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
 import com.sd.lib.eventact.observer.ActivityEventObserver;
 
@@ -14,7 +15,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
 {
     private final WeakReference<Activity> mActivity;
     private final Class<T> mCallbackClass;
-    private final InternalDestroyedObserver mDestroyedObserver = new InternalDestroyedObserver();
+    private final InternalDestroyedObserver mDestroyedObserver;
 
     public BaseEventObserver(Activity activity)
     {
@@ -29,6 +30,8 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
 
         if (!mCallbackClass.isAssignableFrom(getClass()))
             throw new RuntimeException(mCallbackClass + " is not assignable from " + getClass());
+
+        mDestroyedObserver = new InternalDestroyedObserver();
     }
 
     public final Activity getActivity()
@@ -56,24 +59,88 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         mDestroyedObserver.unregister();
     }
 
-    private final class InternalDestroyedObserver implements ActivityEventObserver, ActivityDestroyedCallback
+    private Activity checkActivity()
     {
+        final Activity activity = getActivity();
+        if (activity == null)
+            unregister();
+        return activity;
+    }
+
+    private final class InternalDestroyedObserver implements ActivityEventObserver, Application.ActivityLifecycleCallbacks
+    {
+        private Application mApplication;
+
         @Override
         public boolean register()
         {
-            return ActivityEventManager.getInstance().register(getActivity(), ActivityDestroyedCallback.class, this);
+            final Activity activity = checkActivity();
+            if (activity == null)
+                return false;
+
+            if (activity.isFinishing())
+                return false;
+
+            synchronized (InternalDestroyedObserver.this)
+            {
+                if (mApplication == null)
+                {
+                    mApplication = activity.getApplication();
+                    mApplication.registerActivityLifecycleCallbacks(this);
+                }
+            }
+
+            return true;
         }
 
         @Override
         public void unregister()
         {
-            ActivityEventManager.getInstance().unregister(getActivity(), ActivityDestroyedCallback.class, this);
+            synchronized (InternalDestroyedObserver.this)
+            {
+                if (mApplication != null)
+                {
+                    mApplication.unregisterActivityLifecycleCallbacks(this);
+                    mApplication = null;
+                }
+            }
         }
 
         @Override
         public void onActivityDestroyed(Activity activity)
         {
-            BaseEventObserver.this.unregister();
+            if (activity == checkActivity())
+                BaseEventObserver.this.unregister();
+        }
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle)
+        {
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle)
+        {
         }
     }
 
