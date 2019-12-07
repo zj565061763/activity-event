@@ -53,6 +53,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
     public final void unregister()
     {
         ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
+        mDestroyedObserver.unregister();
     }
 
     private final class InternalDestroyedObserver implements ActivityEventObserver, ActivityDestroyedCallback
@@ -72,7 +73,6 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         @Override
         public void onActivityDestroyed(Activity activity)
         {
-            unregister();
             BaseEventObserver.this.unregister();
         }
     }
