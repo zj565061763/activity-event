@@ -12,6 +12,9 @@ import com.sd.lib.eventact.ActivityEventDispatcherFactory;
 
 public class BaseActivity extends AppCompatActivity
 {
+    /**
+     * 事件分发对象
+     */
     private final ActivityEventDispatcher mEventDispatcher = ActivityEventDispatcherFactory.create(this);
 
     @Override
