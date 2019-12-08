@@ -27,15 +27,15 @@ public class MainActivity extends BaseActivity
         });
 
         // 注册观察者
-        mActivityDestroyedObserver.register();
-        mActivityResultObserver.register();
-        mActivityTouchEventObserver.register();
+        mActivityDestroyedObserver.register(this);
+        mActivityResultObserver.register(this);
+        mActivityTouchEventObserver.register(this);
 
         // activity销毁的时候会移除观察者，也可以手动取消注册
 //        mActivityTouchEventObserver.unregister();
     }
 
-    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver(this)
+    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
     {
         @Override
         public void onActivityDestroyed(Activity activity)
@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver(this)
+    private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver()
     {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver(this)
+    private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver()
     {
         @Override
         public boolean onActivityDispatchTouchEvent(Activity activity, MotionEvent event)
