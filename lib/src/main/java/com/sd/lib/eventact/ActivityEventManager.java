@@ -50,14 +50,17 @@ class ActivityEventManager
         return mCallbackRegister.register(activity, clazz, callback);
     }
 
-    public synchronized <T extends ActivityEventCallback> void unregister(Activity activity, Class<T> clazz, T callback)
+    public synchronized <T extends ActivityEventCallback> boolean unregister(Activity activity, Class<T> clazz, T callback)
     {
-        if (mCallbackRegister != null)
-        {
-            mCallbackRegister.unregister(activity, clazz, callback);
-            if (mCallbackRegister.isEmpty())
-                mCallbackRegister = null;
-        }
+        if (mCallbackRegister == null)
+            return false;
+
+        final boolean result = mCallbackRegister.unregister(activity, clazz, callback);
+
+        if (mCallbackRegister.isEmpty())
+            mCallbackRegister = null;
+
+        return result;
     }
 
     private synchronized <T extends ActivityEventCallback> Collection<T> getCallbacks(Activity activity, Class<T> callbackClass)
