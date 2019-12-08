@@ -35,7 +35,7 @@ class ActivityEventManager
         return INSTANCE;
     }
 
-    private CallbackRegister mCallbackRegister;
+    private CallbackRegister<Activity> mCallbackRegister;
 
     private final DefaultActivityEventDispatcher mDispatcher = new DefaultActivityEventDispatcher();
     private SystemActivityEventDispatcher mSystemActivityEventDispatcher;
@@ -48,7 +48,7 @@ class ActivityEventManager
         initSystemActivityEventDispatcher(activity);
 
         if (mCallbackRegister == null)
-            mCallbackRegister = new CallbackRegister();
+            mCallbackRegister = new CallbackRegister<>();
 
         return mCallbackRegister.register(activity, clazz, callback);
     }

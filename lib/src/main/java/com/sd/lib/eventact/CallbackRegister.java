@@ -1,6 +1,5 @@
 package com.sd.lib.eventact;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.sd.lib.eventact.callback.ActivityEventCallback;
@@ -12,38 +11,35 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-class CallbackRegister
+class CallbackRegister<K>
 {
-    private Map<Activity, Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>>> mMapCallback;
+    private Map<K, Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>>> mMapCallback;
 
     private boolean isDebug()
     {
         return BuildConfig.DEBUG;
     }
 
-    public <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> callbackClass, T callback)
+    public <T extends ActivityEventCallback> boolean register(K key, Class<T> callbackClass, T callback)
     {
-        if (activity == null || callbackClass == null || callback == null)
-            return false;
-
-        if (activity.isFinishing())
+        if (key == null || callbackClass == null || callback == null)
             return false;
 
         if (mMapCallback == null)
             mMapCallback = new WeakHashMap<>();
 
-        Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapActivityCallback = mMapCallback.get(activity);
-        if (mapActivityCallback == null)
+        Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapKeyCallback = mMapCallback.get(key);
+        if (mapKeyCallback == null)
         {
-            mapActivityCallback = new HashMap<>();
-            mMapCallback.put(activity, mapActivityCallback);
+            mapKeyCallback = new HashMap<>();
+            mMapCallback.put(key, mapKeyCallback);
         }
 
-        Collection callbacks = mapActivityCallback.get(callbackClass);
+        Collection callbacks = mapKeyCallback.get(callbackClass);
         if (callbacks == null)
         {
             callbacks = new LinkedHashSet<>();
-            mapActivityCallback.put(callbackClass, callbacks);
+            mapKeyCallback.put(callbackClass, callbacks);
         }
 
         final boolean result = callbacks.add(callback);
@@ -53,32 +49,32 @@ class CallbackRegister
             final StringBuilder builder = new StringBuilder();
             builder.append("+++++ register ").append("\r\n");
             builder.append("result:").append(result).append("\r\n");
-            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("key:").append(key).append("\r\n");
             builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
             builder.append("callback:").append(callback).append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
-            builder.append("size callback type:").append(mapActivityCallback.size()).append("\r\n");
+            builder.append("size callback type:").append(mapKeyCallback.size()).append("\r\n");
             builder.append("size callback:").append(callbacks.size()).append("\r\n");
-            builder.append("holder:").append(mapActivityCallback);
+            builder.append("holder:").append(mapKeyCallback);
             Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
         return result;
     }
 
-    public <T extends ActivityEventCallback> boolean unregister(Activity activity, Class<T> callbackClass, T callback)
+    public <T extends ActivityEventCallback> boolean unregister(K key, Class<T> callbackClass, T callback)
     {
-        if (activity == null || callbackClass == null || callback == null)
+        if (key == null || callbackClass == null || callback == null)
             return false;
 
         if (mMapCallback == null)
             return false;
 
-        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapActivityCallback = mMapCallback.get(activity);
-        if (mapActivityCallback == null)
+        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapKeyCallback = mMapCallback.get(key);
+        if (mapKeyCallback == null)
             return false;
 
-        final Collection callbacks = mapActivityCallback.get(callbackClass);
+        final Collection callbacks = mapKeyCallback.get(callbackClass);
         if (callbacks == null)
             return false;
 
@@ -86,10 +82,10 @@ class CallbackRegister
 
         if (callbacks.isEmpty())
         {
-            mapActivityCallback.remove(callbackClass);
-            if (mapActivityCallback.isEmpty())
+            mapKeyCallback.remove(callbackClass);
+            if (mapKeyCallback.isEmpty())
             {
-                mMapCallback.remove(activity);
+                mMapCallback.remove(key);
                 if (mMapCallback.isEmpty())
                     mMapCallback = null;
             }
@@ -100,47 +96,47 @@ class CallbackRegister
             final StringBuilder builder = new StringBuilder();
             builder.append("----- unregister ").append("\r\n");
             builder.append("result:").append(result).append("\r\n");
-            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("key:").append(key).append("\r\n");
             builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
             builder.append("callback:").append(callback).append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
-            builder.append("size callback type:").append(mapActivityCallback.size()).append("\r\n");
+            builder.append("size callback type:").append(mapKeyCallback.size()).append("\r\n");
             builder.append("size callback:").append(callbacks.size()).append("\r\n");
-            builder.append("holder:").append(mapActivityCallback);
+            builder.append("holder:").append(mapKeyCallback);
             Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
         return result;
     }
 
-    public <T extends ActivityEventCallback> Collection<T> get(Activity activity, Class<T> callbackClass)
+    public <T extends ActivityEventCallback> Collection<T> get(K key, Class<T> callbackClass)
     {
-        if (activity == null || callbackClass == null)
+        if (key == null || callbackClass == null)
             return null;
 
         if (mMapCallback == null)
             return null;
 
-        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapActivityCallback = mMapCallback.get(activity);
-        if (mapActivityCallback == null)
+        final Map<Class<? extends ActivityEventCallback>, Collection<? extends ActivityEventCallback>> mapKeyCallback = mMapCallback.get(key);
+        if (mapKeyCallback == null)
             return null;
 
-        final Collection callbacks = mapActivityCallback.get(callbackClass);
+        final Collection callbacks = mapKeyCallback.get(callbackClass);
         if (callbacks == null)
             return null;
 
         return new ArrayList<>(callbacks);
     }
 
-    public boolean removeActivity(Activity activity)
+    public boolean removeActivity(K key)
     {
-        if (activity == null)
+        if (key == null)
             return false;
 
         if (mMapCallback == null)
             return false;
 
-        final boolean result = mMapCallback.remove(activity) != null;
+        final boolean result = mMapCallback.remove(key) != null;
 
         if (mMapCallback.isEmpty())
             mMapCallback = null;
@@ -150,7 +146,7 @@ class CallbackRegister
             final StringBuilder builder = new StringBuilder();
             builder.append("----- removeActivity ").append("\r\n");
             builder.append("result:").append(result).append("\r\n");
-            builder.append("activity:").append(activity).append("\r\n");
+            builder.append("key:").append(key).append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
             Log.i(CallbackRegister.class.getName(), builder.toString());
         }
