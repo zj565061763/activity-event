@@ -42,6 +42,9 @@ class ActivityEventManager
 
     public synchronized <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
     {
+        if (activity == null || activity.isFinishing())
+            return false;
+
         initSystemActivityEventDispatcher(activity);
 
         if (mCallbackRegister == null)
@@ -83,9 +86,6 @@ class ActivityEventManager
 
     private synchronized void initSystemActivityEventDispatcher(Activity activity)
     {
-        if (activity == null)
-            return;
-
         if (mSystemActivityEventDispatcher == null)
         {
             mSystemActivityEventDispatcher = new SystemActivityEventDispatcher(activity);
