@@ -68,9 +68,9 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
     }
 
-    private void unregisterInternal()
+    private boolean unregisterInternal()
     {
-        ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
+        return ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
     }
 
     private Type getGenericType()
