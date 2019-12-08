@@ -11,15 +11,11 @@ import java.lang.reflect.Type;
 
 public abstract class BaseEventObserver<T extends ActivityEventCallback> implements ActivityEventObserver
 {
-    private final WeakReference<Activity> mActivity;
+    private WeakReference<Activity> mActivity;
     private final Class<T> mCallbackClass;
 
-    public BaseEventObserver(Activity activity)
+    public BaseEventObserver()
     {
-        if (activity == null)
-            throw new IllegalArgumentException("activity is null");
-
-        mActivity = new WeakReference<>(activity);
         mCallbackClass = (Class<T>) getGenericType();
 
         if (mCallbackClass == ActivityEventCallback.class)
@@ -31,13 +27,31 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
 
     public final Activity getActivity()
     {
-        return mActivity.get();
+        return mActivity == null ? null : mActivity.get();
     }
 
-    @Override
-    public final boolean register()
+    private boolean setActivity(Activity activity)
     {
-        return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+        final Activity old = getActivity();
+        if (old != activity)
+        {
+            if (old != null)
+                unregister();
+
+            mActivity = activity == null ? null : new WeakReference<>(activity);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public final boolean register(Activity activity)
+    {
+        if (setActivity(activity))
+            return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+
+        return false;
     }
 
     @Override

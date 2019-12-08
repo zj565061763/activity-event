@@ -26,16 +26,16 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        mActivityCreatedObserver.register();
-        mActivityStartedObserver.register();
-        mActivityResumedObserver.register();
-        mActivityPausedObserver.register();
-        mActivityStoppedObserver.register();
-        mActivityDestroyedObserver.register();
-        mActivitySaveInstanceStateObserver.register();
-        mActivityResultObserver.register();
-        mActivityTouchEventObserver.register();
-        mActivityKeyEventObserver.register();
+        mActivityCreatedObserver.register(this);
+        mActivityStartedObserver.register(this);
+        mActivityResumedObserver.register(this);
+        mActivityPausedObserver.register(this);
+        mActivityStoppedObserver.register(this);
+        mActivityDestroyedObserver.register(this);
+        mActivitySaveInstanceStateObserver.register(this);
+        mActivityResultObserver.register(this);
+        mActivityTouchEventObserver.register(this);
+        mActivityKeyEventObserver.register(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity
         });
     }
 
-    private final ActivityCreatedObserver mActivityCreatedObserver = new ActivityCreatedObserver(this)
+    private final ActivityCreatedObserver mActivityCreatedObserver = new ActivityCreatedObserver()
     {
         @Override
         public void onActivityCreated(Activity activity, Bundle savedInstanceState)
@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityStartedObserver mActivityStartedObserver = new ActivityStartedObserver(this)
+    private final ActivityStartedObserver mActivityStartedObserver = new ActivityStartedObserver()
     {
         @Override
         public void onActivityStarted(Activity activity)
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityResumedObserver mActivityResumedObserver = new ActivityResumedObserver(this)
+    private final ActivityResumedObserver mActivityResumedObserver = new ActivityResumedObserver()
     {
         @Override
         public void onActivityResumed(Activity activity)
@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityPausedObserver mActivityPausedObserver = new ActivityPausedObserver(this)
+    private final ActivityPausedObserver mActivityPausedObserver = new ActivityPausedObserver()
     {
         @Override
         public void onActivityPaused(Activity activity)
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityStoppedObserver mActivityStoppedObserver = new ActivityStoppedObserver(this)
+    private final ActivityStoppedObserver mActivityStoppedObserver = new ActivityStoppedObserver()
     {
         @Override
         public void onActivityStopped(Activity activity)
@@ -96,7 +96,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver(this)
+    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
     {
         @Override
         public void onActivityDestroyed(Activity activity)
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivitySaveInstanceStateObserver mActivitySaveInstanceStateObserver = new ActivitySaveInstanceStateObserver(this)
+    private final ActivitySaveInstanceStateObserver mActivitySaveInstanceStateObserver = new ActivitySaveInstanceStateObserver()
     {
         @Override
         public void onActivitySaveInstanceState(Activity activity, Bundle outState)
@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver(this)
+    private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver()
     {
         @Override
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver(this)
+    private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver()
     {
         @Override
         public boolean onActivityDispatchTouchEvent(Activity activity, MotionEvent event)
@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity
         }
     };
 
-    private final ActivityKeyEventObserver mActivityKeyEventObserver = new ActivityKeyEventObserver(this)
+    private final ActivityKeyEventObserver mActivityKeyEventObserver = new ActivityKeyEventObserver()
     {
         @Override
         public boolean onActivityDispatchKeyEvent(Activity activity, KeyEvent event)
