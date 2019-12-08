@@ -128,7 +128,7 @@ class CallbackRegister<K>
         return new ArrayList<>(callbacks);
     }
 
-    public boolean removeActivity(K key)
+    public boolean remove(K key)
     {
         if (key == null)
             return false;
@@ -144,7 +144,7 @@ class CallbackRegister<K>
         if (isDebug())
         {
             final StringBuilder builder = new StringBuilder();
-            builder.append("----- removeActivity ").append("\r\n");
+            builder.append("----- remove ").append("\r\n");
             builder.append("result:").append(result).append("\r\n");
             builder.append("key:").append(key).append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");

@@ -79,7 +79,7 @@ class ActivityEventManager
         if (mCallbackRegister == null)
             return;
 
-        mCallbackRegister.removeActivity(activity);
+        mCallbackRegister.remove(activity);
         if (mCallbackRegister.isEmpty())
             mCallbackRegister = null;
     }
