@@ -6,43 +6,35 @@
 
 # Example
 ```java
-public class MainActivity extends BaseActivity
+public class TestView extends FrameLayout
 {
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = TestView.class.getSimpleName();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    private final Activity mActivity;
+
+    public TestView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super(context, attrs);
 
-        findViewById(R.id.btn).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                final Intent intent = new Intent(MainActivity.this, ResultActivity.class);
-                startActivityForResult(intent, 99);
-            }
-        });
+        if (!(context instanceof Activity))
+            throw new IllegalArgumentException("context must be instance of " + Activity.class);
 
-        // 注册观察者
-        mActivityDestroyedObserver.register(this);
-        mActivityResultObserver.register(this);
-        mActivityTouchEventObserver.register(this);
-
-        // activity销毁的时候会移除观察者，也可以手动取消注册
-//        mActivityTouchEventObserver.unregister();
+        mActivity = (Activity) context;
     }
 
-    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
+    @Override
+    protected void onAttachedToWindow()
     {
-        @Override
-        public void onActivityDestroyed(Activity activity)
-        {
-            Log.i(TAG, "onActivityDestroyed");
-        }
-    };
+        super.onAttachedToWindow();
+
+        /**
+         * 注册观察者，监听Activity的事件。
+         * 观察者会在Activity销毁的时候被移除，如果需要提前取消，可以调用{@link ActivityEventObserver#unregister()}
+         */
+        mActivityResultObserver.register(mActivity);
+        mActivityDestroyedObserver.register(mActivity);
+        mActivityTouchEventObserver.register(mActivity);
+    }
 
     private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver()
     {
@@ -50,6 +42,15 @@ public class MainActivity extends BaseActivity
         public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
         {
             Log.i(TAG, "onActivityResult:" + requestCode + "," + resultCode + "," + data);
+        }
+    };
+
+    private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
+    {
+        @Override
+        public void onActivityDestroyed(Activity activity)
+        {
+            Log.i(TAG, "onActivityDestroyed");
         }
     };
 
