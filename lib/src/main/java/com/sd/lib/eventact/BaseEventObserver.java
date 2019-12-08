@@ -32,13 +32,16 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
 
     private boolean setActivity(Activity activity)
     {
+        if (activity == null)
+            throw new IllegalArgumentException("activity is null");
+
         final Activity old = getActivity();
         if (old != activity)
         {
             if (old != null)
                 unregister();
 
-            mActivity = activity == null ? null : new WeakReference<>(activity);
+            mActivity = new WeakReference<>(activity);
             return true;
         }
         return false;
@@ -49,13 +52,23 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
     public final boolean register(Activity activity)
     {
         if (setActivity(activity))
-            return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+            return registerInternal();
 
         return false;
     }
 
     @Override
     public final void unregister()
+    {
+        unregisterInternal();
+    }
+
+    private boolean registerInternal()
+    {
+        return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
+    }
+
+    private void unregisterInternal()
     {
         ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
     }
