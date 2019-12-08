@@ -66,7 +66,7 @@ class ActivityEventManager
         return result;
     }
 
-    private synchronized <T extends ActivityEventCallback> Collection<T> getCallbacks(Activity activity, Class<T> callbackClass)
+    private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(Activity activity, Class<T> callbackClass)
     {
         if (mCallbackRegister == null)
             return null;
@@ -192,7 +192,7 @@ class ActivityEventManager
     {
         public void dispatch_onCreate(Activity activity, Bundle savedInstanceState)
         {
-            final Collection<ActivityCreatedCallback> callbacks = getCallbacks(activity, ActivityCreatedCallback.class);
+            final Collection<ActivityCreatedCallback> callbacks = getActivityCallbacks(activity, ActivityCreatedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -204,7 +204,7 @@ class ActivityEventManager
 
         public void dispatch_onStart(Activity activity)
         {
-            final Collection<ActivityStartedCallback> callbacks = getCallbacks(activity, ActivityStartedCallback.class);
+            final Collection<ActivityStartedCallback> callbacks = getActivityCallbacks(activity, ActivityStartedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -216,7 +216,7 @@ class ActivityEventManager
 
         public void dispatch_onResume(Activity activity)
         {
-            final Collection<ActivityResumedCallback> callbacks = getCallbacks(activity, ActivityResumedCallback.class);
+            final Collection<ActivityResumedCallback> callbacks = getActivityCallbacks(activity, ActivityResumedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -228,7 +228,7 @@ class ActivityEventManager
 
         public void dispatch_onPause(Activity activity)
         {
-            final Collection<ActivityPausedCallback> callbacks = getCallbacks(activity, ActivityPausedCallback.class);
+            final Collection<ActivityPausedCallback> callbacks = getActivityCallbacks(activity, ActivityPausedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -240,7 +240,7 @@ class ActivityEventManager
 
         public void dispatch_onStop(Activity activity)
         {
-            final Collection<ActivityStoppedCallback> callbacks = getCallbacks(activity, ActivityStoppedCallback.class);
+            final Collection<ActivityStoppedCallback> callbacks = getActivityCallbacks(activity, ActivityStoppedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -252,7 +252,7 @@ class ActivityEventManager
 
         public void dispatch_onDestroy(Activity activity)
         {
-            final Collection<ActivityDestroyedCallback> callbacks = getCallbacks(activity, ActivityDestroyedCallback.class);
+            final Collection<ActivityDestroyedCallback> callbacks = getActivityCallbacks(activity, ActivityDestroyedCallback.class);
             if (callbacks == null)
                 return;
 
@@ -266,7 +266,7 @@ class ActivityEventManager
 
         public void dispatch_onSaveInstanceState(Activity activity, Bundle outState)
         {
-            final Collection<ActivitySaveInstanceStateCallback> callbacks = getCallbacks(activity, ActivitySaveInstanceStateCallback.class);
+            final Collection<ActivitySaveInstanceStateCallback> callbacks = getActivityCallbacks(activity, ActivitySaveInstanceStateCallback.class);
             if (callbacks == null)
                 return;
 
@@ -278,7 +278,7 @@ class ActivityEventManager
 
         public void dispatch_onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
         {
-            final Collection<ActivityResultCallback> callbacks = getCallbacks(activity, ActivityResultCallback.class);
+            final Collection<ActivityResultCallback> callbacks = getActivityCallbacks(activity, ActivityResultCallback.class);
             if (callbacks == null)
                 return;
 
@@ -290,7 +290,7 @@ class ActivityEventManager
 
         public boolean dispatch_dispatchTouchEvent(Activity activity, MotionEvent event)
         {
-            final Collection<ActivityTouchEventCallback> callbacks = getCallbacks(activity, ActivityTouchEventCallback.class);
+            final Collection<ActivityTouchEventCallback> callbacks = getActivityCallbacks(activity, ActivityTouchEventCallback.class);
             if (callbacks == null)
                 return false;
 
@@ -304,7 +304,7 @@ class ActivityEventManager
 
         public boolean dispatch_dispatchKeyEvent(Activity activity, KeyEvent event)
         {
-            final Collection<ActivityKeyEventCallback> callbacks = getCallbacks(activity, ActivityKeyEventCallback.class);
+            final Collection<ActivityKeyEventCallback> callbacks = getActivityCallbacks(activity, ActivityKeyEventCallback.class);
             if (callbacks == null)
                 return false;
 
