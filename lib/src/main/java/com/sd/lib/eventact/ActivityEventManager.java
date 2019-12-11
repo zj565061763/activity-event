@@ -22,7 +22,7 @@ import com.sd.lib.eventact.callback.ActivityTouchEventCallback;
 
 import java.util.Collection;
 
-class ActivityEventManager
+public class ActivityEventManager
 {
     private static final ActivityEventManager INSTANCE = new ActivityEventManager();
 
@@ -40,7 +40,19 @@ class ActivityEventManager
     private final DefaultActivityEventDispatcher mDispatcher = new DefaultActivityEventDispatcher();
     private SystemActivityEventDispatcher mSystemActivityEventDispatcher;
 
-    public synchronized <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
+    private boolean mIsDebug;
+
+    public boolean isDebug()
+    {
+        return mIsDebug;
+    }
+
+    public void setDebug(boolean debug)
+    {
+        mIsDebug = debug;
+    }
+
+    synchronized <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
     {
         if (activity == null || activity.isFinishing())
             return false;
@@ -53,7 +65,7 @@ class ActivityEventManager
         return mCallbackRegister.register(activity, clazz, callback);
     }
 
-    public synchronized <T extends ActivityEventCallback> boolean unregister(Activity activity, Class<T> clazz, T callback)
+    synchronized <T extends ActivityEventCallback> boolean unregister(Activity activity, Class<T> clazz, T callback)
     {
         if (mCallbackRegister == null)
             return false;
@@ -86,7 +98,7 @@ class ActivityEventManager
         }
     }
 
-    public ActivityEventDispatcher newActivityEventDispatcher(Activity activity)
+    ActivityEventDispatcher newActivityEventDispatcher(Activity activity)
     {
         return new CustomActivityEventDispatcher(activity);
     }

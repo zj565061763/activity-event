@@ -17,7 +17,7 @@ class CallbackRegister<K>
 
     private boolean isDebug()
     {
-        return BuildConfig.DEBUG;
+        return ActivityEventManager.getInstance().isDebug();
     }
 
     public <T extends ActivityEventCallback> boolean register(K key, Class<T> callbackClass, T callback)

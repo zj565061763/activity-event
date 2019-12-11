@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.sd.lib.eventact.ActivityEventManager;
 import com.sd.lib.eventact.observer.ActivityCreatedObserver;
 import com.sd.lib.eventact.observer.ActivityDestroyedObserver;
 import com.sd.lib.eventact.observer.ActivityKeyEventObserver;
@@ -26,6 +27,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        ActivityEventManager.getInstance().setDebug(true);
+
         mActivityCreatedObserver.register(this);
         mActivityStartedObserver.register(this);
         mActivityResumedObserver.register(this);
