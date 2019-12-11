@@ -61,6 +61,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
     public final void unregister()
     {
         unregisterInternal();
+        mActivity = null;
     }
 
     private boolean registerInternal()
