@@ -84,7 +84,7 @@ class ActivityEventManager
             mCallbackRegister = null;
     }
 
-    private synchronized void initSystemActivityEventDispatcher(Activity activity)
+    private void initSystemActivityEventDispatcher(Activity activity)
     {
         if (mSystemActivityEventDispatcher == null)
         {
