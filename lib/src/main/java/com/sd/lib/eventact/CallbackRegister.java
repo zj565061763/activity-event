@@ -153,9 +153,4 @@ class CallbackRegister<K>
 
         return result;
     }
-
-    public boolean isEmpty()
-    {
-        return mMapCallback == null || mMapCallback.isEmpty();
-    }
 }

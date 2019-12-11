@@ -58,12 +58,7 @@ class ActivityEventManager
         if (mCallbackRegister == null)
             return false;
 
-        final boolean result = mCallbackRegister.unregister(activity, clazz, callback);
-
-        if (mCallbackRegister.isEmpty())
-            mCallbackRegister = null;
-
-        return result;
+        return mCallbackRegister.unregister(activity, clazz, callback);
     }
 
     private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(Activity activity, Class<T> callbackClass)
@@ -80,8 +75,6 @@ class ActivityEventManager
             return;
 
         mCallbackRegister.remove(activity);
-        if (mCallbackRegister.isEmpty())
-            mCallbackRegister = null;
     }
 
     private void initSystemActivityEventDispatcher(Activity activity)
