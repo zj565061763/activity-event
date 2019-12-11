@@ -47,15 +47,14 @@ class CallbackRegister<K>
         if (isDebug())
         {
             final StringBuilder builder = new StringBuilder();
-            builder.append("+++++ register ").append("\r\n");
-            builder.append("result:").append(result).append("\r\n");
+            builder.append("+++++ register ").append(result).append("\r\n");
             builder.append("key:").append(key).append("\r\n");
-            builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
-            builder.append("callback:").append(callback).append("\r\n");
+            builder.append("callbackClass:").append(callbackClass.getSimpleName())
+                    .append(" -> ").append(callback)
+                    .append(" -> ").append(callbacks.size())
+                    .append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
             builder.append("size callback type:").append(mapKeyCallback.size()).append("\r\n");
-            builder.append("size callback:").append(callbacks.size()).append("\r\n");
-            builder.append("holder:").append(mapKeyCallback);
             Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
@@ -94,15 +93,14 @@ class CallbackRegister<K>
         if (isDebug())
         {
             final StringBuilder builder = new StringBuilder();
-            builder.append("----- unregister ").append("\r\n");
-            builder.append("result:").append(result).append("\r\n");
+            builder.append("----- unregister ").append(result).append("\r\n");
             builder.append("key:").append(key).append("\r\n");
-            builder.append("callbackClass:").append(callbackClass.getSimpleName()).append("\r\n");
-            builder.append("callback:").append(callback).append("\r\n");
+            builder.append("callbackClass:").append(callbackClass.getSimpleName())
+                    .append(" -> ").append(callback)
+                    .append(" -> ").append(callbacks.size())
+                    .append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
             builder.append("size callback type:").append(mapKeyCallback.size()).append("\r\n");
-            builder.append("size callback:").append(callbacks.size()).append("\r\n");
-            builder.append("holder:").append(mapKeyCallback);
             Log.i(CallbackRegister.class.getName(), builder.toString());
         }
 
@@ -144,8 +142,7 @@ class CallbackRegister<K>
         if (isDebug())
         {
             final StringBuilder builder = new StringBuilder();
-            builder.append("----- remove ").append("\r\n");
-            builder.append("result:").append(result).append("\r\n");
+            builder.append("----- remove ").append(result).append("\r\n");
             builder.append("key:").append(key).append("\r\n");
             builder.append("size total:").append(mMapCallback != null ? mMapCallback.size() : 0).append(",").append("\r\n");
             Log.i(CallbackRegister.class.getName(), builder.toString());
