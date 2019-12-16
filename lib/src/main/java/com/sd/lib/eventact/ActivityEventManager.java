@@ -5,6 +5,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
@@ -201,6 +202,12 @@ public class ActivityEventManager
             if (callbacks == null)
                 return;
 
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onCreate size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
+
             for (ActivityCreatedCallback item : callbacks)
             {
                 item.onActivityCreated(activity, savedInstanceState);
@@ -212,6 +219,12 @@ public class ActivityEventManager
             final Collection<ActivityStartedCallback> callbacks = getActivityCallbacks(activity, ActivityStartedCallback.class);
             if (callbacks == null)
                 return;
+
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onStart size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
 
             for (ActivityStartedCallback item : callbacks)
             {
@@ -225,6 +238,12 @@ public class ActivityEventManager
             if (callbacks == null)
                 return;
 
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onResume size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
+
             for (ActivityResumedCallback item : callbacks)
             {
                 item.onActivityResumed(activity);
@@ -236,6 +255,12 @@ public class ActivityEventManager
             final Collection<ActivityPausedCallback> callbacks = getActivityCallbacks(activity, ActivityPausedCallback.class);
             if (callbacks == null)
                 return;
+
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onPause size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
 
             for (ActivityPausedCallback item : callbacks)
             {
@@ -249,6 +274,12 @@ public class ActivityEventManager
             if (callbacks == null)
                 return;
 
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onStop size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
+
             for (ActivityStoppedCallback item : callbacks)
             {
                 item.onActivityStopped(activity);
@@ -260,6 +291,12 @@ public class ActivityEventManager
             final Collection<ActivityDestroyedCallback> callbacks = getActivityCallbacks(activity, ActivityDestroyedCallback.class);
             if (callbacks == null)
                 return;
+
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onDestroy size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
 
             for (ActivityDestroyedCallback item : callbacks)
             {
@@ -275,6 +312,12 @@ public class ActivityEventManager
             if (callbacks == null)
                 return;
 
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onSaveInstanceState size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
+
             for (ActivitySaveInstanceStateCallback item : callbacks)
             {
                 item.onActivitySaveInstanceState(activity, outState);
@@ -287,6 +330,12 @@ public class ActivityEventManager
             if (callbacks == null)
                 return;
 
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onActivityResult size:" + callbacks.size() + "\r\n" +
+                        callbacks);
+            }
+
             for (ActivityResultCallback item : callbacks)
             {
                 item.onActivityResult(activity, requestCode, resultCode, data);
@@ -298,6 +347,12 @@ public class ActivityEventManager
             final Collection<ActivityTouchEventCallback> callbacks = getActivityCallbacks(activity, ActivityTouchEventCallback.class);
             if (callbacks == null)
                 return false;
+
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchTouchEvent size:" + callbacks.size() + " event:" + event.getAction() + "\r\n" +
+                        callbacks);
+            }
 
             for (ActivityTouchEventCallback item : callbacks)
             {
@@ -312,6 +367,12 @@ public class ActivityEventManager
             final Collection<ActivityKeyEventCallback> callbacks = getActivityCallbacks(activity, ActivityKeyEventCallback.class);
             if (callbacks == null)
                 return false;
+
+            if (isDebug())
+            {
+                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchKeyEvent size:" + callbacks.size() + " event:" + event.getKeyCode() + "," + event.getAction() + "\r\n" +
+                        callbacks);
+            }
 
             for (ActivityKeyEventCallback item : callbacks)
             {
