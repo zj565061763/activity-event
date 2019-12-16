@@ -204,7 +204,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onCreate size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onCreate " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -222,7 +222,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onStart size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onStart " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -240,7 +240,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onResume size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onResume " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -258,7 +258,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onPause size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onPause " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -276,7 +276,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onStop size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onStop " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -294,7 +294,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onDestroy size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onDestroy " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -314,7 +314,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onSaveInstanceState size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onSaveInstanceState " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -332,7 +332,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_onActivityResult size:" + callbacks.size() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_onActivityResult " + activity + " size:" + callbacks.size() + "\r\n" +
                         callbacks);
             }
 
@@ -350,7 +350,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchTouchEvent size:" + callbacks.size() + " event:" + event.getAction() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchTouchEvent " + activity + " size:" + callbacks.size() + " event:" + event.getAction() + "\r\n" +
                         callbacks);
             }
 
@@ -370,7 +370,7 @@ public class ActivityEventManager
 
             if (isDebug())
             {
-                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchKeyEvent size:" + callbacks.size() + " event:" + event.getKeyCode() + "," + event.getAction() + "\r\n" +
+                Log.i(ActivityEventManager.class.getName(), "dispatch_dispatchKeyEvent " + activity + " size:" + callbacks.size() + " event:" + event.getKeyCode() + "," + event.getAction() + "\r\n" +
                         callbacks);
             }
 
