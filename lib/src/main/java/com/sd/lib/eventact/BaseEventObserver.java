@@ -51,6 +51,9 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
     @Override
     public final boolean register(Activity activity)
     {
+        if (activity == null)
+            return false;
+
         if (setActivity(activity))
             return registerInternal();
 
