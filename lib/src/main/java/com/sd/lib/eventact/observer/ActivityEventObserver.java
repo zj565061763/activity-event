@@ -10,7 +10,7 @@ public interface ActivityEventObserver
      * 注册
      *
      * @param activity 要监听的对象
-     * @return true-注册成功；false-注册失败或者已经注册到该Activity对象
+     * @return true-注册成功或者已经注册到该Activity对象；false-注册失败
      */
     boolean register(@Nullable Activity activity);
 

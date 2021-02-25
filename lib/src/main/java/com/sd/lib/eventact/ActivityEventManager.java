@@ -25,26 +25,36 @@ import com.sd.lib.eventact.callback.ActivityStoppedCallback;
 import com.sd.lib.eventact.callback.ActivityTouchEventCallback;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class ActivityEventManager
 {
-    private static final ActivityEventManager INSTANCE = new ActivityEventManager();
-
-    private ActivityEventManager()
-    {
-    }
+    private static ActivityEventManager sInstance;
 
     public static ActivityEventManager getInstance()
     {
-        return INSTANCE;
+        if (sInstance != null)
+            return sInstance;
+
+        synchronized (ActivityEventManager.class)
+        {
+            if (sInstance == null)
+                sInstance = new ActivityEventManager();
+            return sInstance;
+        }
     }
 
-    private final CallbackRegister<Activity> mCallbackRegister = new CallbackRegister<>();
+    private final Map<Activity, CallbackHolder> mCallbackHolder = new WeakHashMap<>();
 
     private final DefaultActivityEventDispatcher mDispatcher = new DefaultActivityEventDispatcher();
     private SystemActivityEventDispatcher mSystemActivityEventDispatcher;
 
     private boolean mIsDebug;
+
+    private ActivityEventManager()
+    {
+    }
 
     public boolean isDebug()
     {
@@ -58,44 +68,61 @@ public class ActivityEventManager
 
     synchronized <T extends ActivityEventCallback> boolean register(@NonNull Activity activity, @NonNull Class<T> clazz, @NonNull T callback)
     {
-        if (activity == null || clazz == null || callback == null)
+        if (activity == null)
             throw new IllegalArgumentException("null argument");
 
         if (activity.isFinishing())
             return false;
 
-        initSystemActivityEventDispatcher(activity);
-        return mCallbackRegister.register(activity, clazz, callback);
-    }
-
-    synchronized <T extends ActivityEventCallback> boolean unregister(@NonNull Activity activity, @NonNull Class<T> clazz, T callback)
-    {
-        if (activity == null || clazz == null || callback == null)
-            throw new IllegalArgumentException("null argument");
-
-        return mCallbackRegister.unregister(activity, clazz, callback);
-    }
-
-    private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(Activity activity, Class<T> callbackClass)
-    {
-        return mCallbackRegister.get(activity, callbackClass);
-    }
-
-    private synchronized void removeActivityCallback(Activity activity)
-    {
-        mCallbackRegister.remove(activity);
-    }
-
-    private void initSystemActivityEventDispatcher(Activity activity)
-    {
         if (mSystemActivityEventDispatcher == null)
         {
             mSystemActivityEventDispatcher = new SystemActivityEventDispatcher(activity);
             mSystemActivityEventDispatcher.register();
         }
+
+        CallbackHolder holder = mCallbackHolder.get(activity);
+        if (holder == null)
+        {
+            holder = new CallbackHolder();
+            mCallbackHolder.put(activity, holder);
+        }
+
+        holder.add(clazz, callback);
+        return true;
     }
 
-    ActivityEventDispatcher newActivityEventDispatcher(Activity activity)
+    synchronized <T extends ActivityEventCallback> void unregister(@NonNull Activity activity, @NonNull Class<T> clazz, @NonNull T callback)
+    {
+        if (activity == null)
+            throw new IllegalArgumentException("null argument");
+
+        final CallbackHolder holder = mCallbackHolder.get(activity);
+        if (holder == null)
+            return;
+
+        holder.remove(clazz, callback);
+        if (holder.isEmpty())
+            mCallbackHolder.remove(activity);
+    }
+
+    private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(@NonNull Activity activity, @NonNull Class<T> clazz)
+    {
+        if (activity == null)
+            throw new IllegalArgumentException("null argument");
+
+        final CallbackHolder holder = mCallbackHolder.get(activity);
+        return holder != null ? holder.get(clazz) : null;
+    }
+
+    private synchronized void removeActivityCallback(@NonNull Activity activity)
+    {
+        if (activity == null)
+            throw new IllegalArgumentException("null argument");
+
+        mCallbackHolder.remove(activity);
+    }
+
+    ActivityEventDispatcher newActivityEventDispatcher(@NonNull Activity activity)
     {
         return new CustomActivityEventDispatcher(activity);
     }
