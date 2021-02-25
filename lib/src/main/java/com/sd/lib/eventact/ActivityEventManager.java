@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sd.lib.eventact.callback.ActivityCreatedCallback;
 import com.sd.lib.eventact.callback.ActivityDestroyedCallback;
 import com.sd.lib.eventact.callback.ActivityEventCallback;
@@ -176,19 +179,19 @@ public class ActivityEventManager
         }
 
         @Override
-        public void dispatch_onActivityResult(int requestCode, int resultCode, Intent data)
+        public void dispatch_onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
         {
             mDispatcher.dispatch_onActivityResult(mActivity, requestCode, resultCode, data);
         }
 
         @Override
-        public boolean dispatch_dispatchTouchEvent(MotionEvent event)
+        public boolean dispatch_dispatchTouchEvent(@NonNull MotionEvent event)
         {
             return mDispatcher.dispatch_dispatchTouchEvent(mActivity, event);
         }
 
         @Override
-        public boolean dispatch_dispatchKeyEvent(KeyEvent event)
+        public boolean dispatch_dispatchKeyEvent(@NonNull KeyEvent event)
         {
             return mDispatcher.dispatch_dispatchKeyEvent(mActivity, event);
         }
