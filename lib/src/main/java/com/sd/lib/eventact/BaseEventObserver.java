@@ -34,38 +34,35 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         return mActivity == null ? null : mActivity.get();
     }
 
-    private boolean setActivity(@NonNull Activity activity)
-    {
-        if (activity == null)
-            throw new IllegalArgumentException("activity is null");
-
-        final Activity old = getActivity();
-        if (old != activity)
-        {
-            if (old != null)
-                unregister();
-
-            mActivity = new WeakReference<>(activity);
-            return true;
-        }
-        return false;
-    }
-
-
     @Override
-    public final boolean register(@Nullable Activity activity)
+    public final synchronized boolean register(@Nullable Activity activity)
     {
         if (activity == null)
             return false;
 
-        if (setActivity(activity))
-            return ActivityEventManager.getInstance().register(activity, mCallbackClass, (T) this);
+        final Activity oldActivity = getActivity();
+        if (oldActivity != null)
+        {
+            if (oldActivity == activity)
+            {
+                // 以进注册过了
+                return true;
+            } else
+            {
+                // Activity对象发生变化，先取消注册
+                unregister();
+            }
+        }
 
-        return false;
+        final boolean register = ActivityEventManager.getInstance().register(activity, mCallbackClass, (T) this);
+        if (register)
+            mActivity = new WeakReference<>(activity);
+
+        return register;
     }
 
     @Override
-    public final void unregister()
+    public final synchronized void unregister()
     {
         final Activity activity = getActivity();
         if (activity != null)
