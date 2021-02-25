@@ -105,6 +105,7 @@ public class ActivityEventManager
             mCallbackHolder.remove(activity);
     }
 
+    @Nullable
     private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(@NonNull Activity activity, @NonNull Class<T> clazz)
     {
         if (activity == null)
@@ -122,6 +123,7 @@ public class ActivityEventManager
         mCallbackHolder.remove(activity);
     }
 
+    @NonNull
     ActivityEventDispatcher newActivityEventDispatcher(@NonNull Activity activity)
     {
         return new CustomActivityEventDispatcher(activity);

@@ -10,6 +10,7 @@ public final class ActivityEventDispatcherFactory
     {
     }
 
+    @NonNull
     public static ActivityEventDispatcher create(@NonNull Activity activity)
     {
         return ActivityEventManager.getInstance().newActivityEventDispatcher(activity);
