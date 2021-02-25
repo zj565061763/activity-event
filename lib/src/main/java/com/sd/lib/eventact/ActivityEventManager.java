@@ -39,7 +39,7 @@ public class ActivityEventManager
         return INSTANCE;
     }
 
-    private CallbackRegister<Activity> mCallbackRegister;
+    private final CallbackRegister<Activity> mCallbackRegister = new CallbackRegister<>();
 
     private final DefaultActivityEventDispatcher mDispatcher = new DefaultActivityEventDispatcher();
     private SystemActivityEventDispatcher mSystemActivityEventDispatcher;
@@ -65,10 +65,6 @@ public class ActivityEventManager
             return false;
 
         initSystemActivityEventDispatcher(activity);
-
-        if (mCallbackRegister == null)
-            mCallbackRegister = new CallbackRegister<>();
-
         return mCallbackRegister.register(activity, clazz, callback);
     }
 
@@ -77,25 +73,16 @@ public class ActivityEventManager
         if (activity == null || clazz == null || callback == null)
             throw new IllegalArgumentException("null argument");
 
-        if (mCallbackRegister == null)
-            return false;
-
         return mCallbackRegister.unregister(activity, clazz, callback);
     }
 
     private synchronized <T extends ActivityEventCallback> Collection<T> getActivityCallbacks(Activity activity, Class<T> callbackClass)
     {
-        if (mCallbackRegister == null)
-            return null;
-
         return mCallbackRegister.get(activity, callbackClass);
     }
 
     private synchronized void removeActivityCallback(Activity activity)
     {
-        if (mCallbackRegister == null)
-            return;
-
         mCallbackRegister.remove(activity);
     }
 
