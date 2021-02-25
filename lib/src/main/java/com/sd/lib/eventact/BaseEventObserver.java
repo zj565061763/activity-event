@@ -59,7 +59,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
             return false;
 
         if (setActivity(activity))
-            return registerInternal();
+            return ActivityEventManager.getInstance().register(activity, mCallbackClass, (T) this);
 
         return false;
     }
@@ -67,18 +67,11 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
     @Override
     public final void unregister()
     {
-        unregisterInternal();
+        final Activity activity = getActivity();
+        if (activity != null)
+            ActivityEventManager.getInstance().unregister(activity, mCallbackClass, (T) this);
+
         mActivity = null;
-    }
-
-    private boolean registerInternal()
-    {
-        return ActivityEventManager.getInstance().register(getActivity(), mCallbackClass, (T) this);
-    }
-
-    private boolean unregisterInternal()
-    {
-        return ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
     }
 
     @NonNull

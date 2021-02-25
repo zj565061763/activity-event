@@ -56,9 +56,12 @@ public class ActivityEventManager
         mIsDebug = debug;
     }
 
-    synchronized <T extends ActivityEventCallback> boolean register(Activity activity, Class<T> clazz, T callback)
+    synchronized <T extends ActivityEventCallback> boolean register(@NonNull Activity activity, @NonNull Class<T> clazz, @NonNull T callback)
     {
-        if (activity == null || activity.isFinishing())
+        if (activity == null || clazz == null || callback == null)
+            throw new IllegalArgumentException("null argument");
+
+        if (activity.isFinishing())
             return false;
 
         initSystemActivityEventDispatcher(activity);
@@ -69,8 +72,11 @@ public class ActivityEventManager
         return mCallbackRegister.register(activity, clazz, callback);
     }
 
-    synchronized <T extends ActivityEventCallback> boolean unregister(Activity activity, Class<T> clazz, T callback)
+    synchronized <T extends ActivityEventCallback> boolean unregister(@NonNull Activity activity, @NonNull Class<T> clazz, T callback)
     {
+        if (activity == null || clazz == null || callback == null)
+            throw new IllegalArgumentException("null argument");
+
         if (mCallbackRegister == null)
             return false;
 
