@@ -219,7 +219,7 @@ public class ActivityEventManager
 
     private final class DefaultActivityEventDispatcher
     {
-        public void dispatch_onCreate(Activity activity, Bundle savedInstanceState)
+        public void dispatch_onCreate(@NonNull Activity activity, @NonNull Bundle savedInstanceState)
         {
             final Collection<ActivityCreatedCallback> callbacks = getActivityCallbacks(activity, ActivityCreatedCallback.class);
             if (callbacks == null)
@@ -237,7 +237,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onStart(Activity activity)
+        public void dispatch_onStart(@NonNull Activity activity)
         {
             final Collection<ActivityStartedCallback> callbacks = getActivityCallbacks(activity, ActivityStartedCallback.class);
             if (callbacks == null)
@@ -255,7 +255,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onResume(Activity activity)
+        public void dispatch_onResume(@NonNull Activity activity)
         {
             final Collection<ActivityResumedCallback> callbacks = getActivityCallbacks(activity, ActivityResumedCallback.class);
             if (callbacks == null)
@@ -273,7 +273,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onPause(Activity activity)
+        public void dispatch_onPause(@NonNull Activity activity)
         {
             final Collection<ActivityPausedCallback> callbacks = getActivityCallbacks(activity, ActivityPausedCallback.class);
             if (callbacks == null)
@@ -291,7 +291,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onStop(Activity activity)
+        public void dispatch_onStop(@NonNull Activity activity)
         {
             final Collection<ActivityStoppedCallback> callbacks = getActivityCallbacks(activity, ActivityStoppedCallback.class);
             if (callbacks == null)
@@ -309,7 +309,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onDestroy(Activity activity)
+        public void dispatch_onDestroy(@NonNull Activity activity)
         {
             final Collection<ActivityDestroyedCallback> callbacks = getActivityCallbacks(activity, ActivityDestroyedCallback.class);
             if (callbacks == null)
@@ -329,7 +329,7 @@ public class ActivityEventManager
             removeActivityCallback(activity);
         }
 
-        public void dispatch_onSaveInstanceState(Activity activity, Bundle outState)
+        public void dispatch_onSaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState)
         {
             final Collection<ActivitySaveInstanceStateCallback> callbacks = getActivityCallbacks(activity, ActivitySaveInstanceStateCallback.class);
             if (callbacks == null)
@@ -347,7 +347,7 @@ public class ActivityEventManager
             }
         }
 
-        public void dispatch_onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
+        public void dispatch_onActivityResult(@NonNull Activity activity, int requestCode, int resultCode, @Nullable Intent data)
         {
             final Collection<ActivityResultCallback> callbacks = getActivityCallbacks(activity, ActivityResultCallback.class);
             if (callbacks == null)
@@ -365,7 +365,7 @@ public class ActivityEventManager
             }
         }
 
-        public boolean dispatch_dispatchTouchEvent(Activity activity, MotionEvent event)
+        public boolean dispatch_dispatchTouchEvent(@NonNull Activity activity, @NonNull MotionEvent event)
         {
             final Collection<ActivityTouchEventCallback> callbacks = getActivityCallbacks(activity, ActivityTouchEventCallback.class);
             if (callbacks == null)
@@ -385,7 +385,7 @@ public class ActivityEventManager
             return false;
         }
 
-        public boolean dispatch_dispatchKeyEvent(Activity activity, KeyEvent event)
+        public boolean dispatch_dispatchKeyEvent(@NonNull Activity activity, @NonNull KeyEvent event)
         {
             final Collection<ActivityKeyEventCallback> callbacks = getActivityCallbacks(activity, ActivityKeyEventCallback.class);
             if (callbacks == null)
