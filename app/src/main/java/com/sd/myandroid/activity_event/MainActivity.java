@@ -8,6 +8,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sd.lib.eventact.ActivityEventManager;
 import com.sd.lib.eventact.observer.ActivityCreatedObserver;
 import com.sd.lib.eventact.observer.ActivityDestroyedObserver;
@@ -25,7 +28,7 @@ public class MainActivity extends BaseActivity
     public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected void onCreate(@Nullable Bundle savedInstanceState)
     {
         ActivityEventManager.getInstance().setDebug(true);
 
@@ -57,7 +60,7 @@ public class MainActivity extends BaseActivity
     private final ActivityCreatedObserver mActivityCreatedObserver = new ActivityCreatedObserver()
     {
         @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState)
+        public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState)
         {
             Log.i(TAG, "onActivityCreated");
         }
@@ -66,7 +69,7 @@ public class MainActivity extends BaseActivity
     private final ActivityStartedObserver mActivityStartedObserver = new ActivityStartedObserver()
     {
         @Override
-        public void onActivityStarted(Activity activity)
+        public void onActivityStarted(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityStarted");
         }
@@ -75,7 +78,7 @@ public class MainActivity extends BaseActivity
     private final ActivityResumedObserver mActivityResumedObserver = new ActivityResumedObserver()
     {
         @Override
-        public void onActivityResumed(Activity activity)
+        public void onActivityResumed(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityResumed");
         }
@@ -84,7 +87,7 @@ public class MainActivity extends BaseActivity
     private final ActivityPausedObserver mActivityPausedObserver = new ActivityPausedObserver()
     {
         @Override
-        public void onActivityPaused(Activity activity)
+        public void onActivityPaused(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityPaused");
         }
@@ -93,7 +96,7 @@ public class MainActivity extends BaseActivity
     private final ActivityStoppedObserver mActivityStoppedObserver = new ActivityStoppedObserver()
     {
         @Override
-        public void onActivityStopped(Activity activity)
+        public void onActivityStopped(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityStopped");
         }
@@ -102,7 +105,7 @@ public class MainActivity extends BaseActivity
     private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
     {
         @Override
-        public void onActivityDestroyed(Activity activity)
+        public void onActivityDestroyed(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityDestroyed");
         }
@@ -111,7 +114,7 @@ public class MainActivity extends BaseActivity
     private final ActivitySaveInstanceStateObserver mActivitySaveInstanceStateObserver = new ActivitySaveInstanceStateObserver()
     {
         @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState)
+        public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState)
         {
             Log.i(TAG, "onActivitySaveInstanceState");
         }
@@ -120,7 +123,7 @@ public class MainActivity extends BaseActivity
     private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver()
     {
         @Override
-        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
+        public void onActivityResult(@NonNull Activity activity, int requestCode, int resultCode, @Nullable Intent data)
         {
             Log.i(TAG, "onActivityResult:" + requestCode + "," + resultCode + "," + data);
         }
@@ -129,7 +132,7 @@ public class MainActivity extends BaseActivity
     private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver()
     {
         @Override
-        public boolean onActivityDispatchTouchEvent(Activity activity, MotionEvent event)
+        public boolean onActivityDispatchTouchEvent(@NonNull Activity activity, @NonNull MotionEvent event)
         {
             Log.i(TAG, "onActivityDispatchTouchEvent:" + event.getAction());
             return false;
@@ -139,7 +142,7 @@ public class MainActivity extends BaseActivity
     private final ActivityKeyEventObserver mActivityKeyEventObserver = new ActivityKeyEventObserver()
     {
         @Override
-        public boolean onActivityDispatchKeyEvent(Activity activity, KeyEvent event)
+        public boolean onActivityDispatchKeyEvent(@NonNull Activity activity, @NonNull KeyEvent event)
         {
             Log.i(TAG, "onActivityDispatchKeyEvent:" + event.getAction());
             return false;
