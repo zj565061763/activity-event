@@ -2,6 +2,8 @@ package com.sd.lib.eventact.observer;
 
 import android.app.Activity;
 
+import androidx.annotation.Nullable;
+
 public interface ActivityEventObserver
 {
     /**
@@ -10,7 +12,7 @@ public interface ActivityEventObserver
      * @param activity 要监听的对象
      * @return true-注册成功；false-注册失败或者已经注册到该Activity对象
      */
-    boolean register(Activity activity);
+    boolean register(@Nullable Activity activity);
 
     /**
      * 取消注册

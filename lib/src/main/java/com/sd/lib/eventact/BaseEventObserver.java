@@ -2,6 +2,9 @@ package com.sd.lib.eventact;
 
 import android.app.Activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.sd.lib.eventact.callback.ActivityEventCallback;
 import com.sd.lib.eventact.observer.ActivityEventObserver;
 
@@ -25,12 +28,13 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
             throw new RuntimeException(mCallbackClass + " is not assignable from " + getClass());
     }
 
+    @Nullable
     public final Activity getActivity()
     {
         return mActivity == null ? null : mActivity.get();
     }
 
-    private boolean setActivity(Activity activity)
+    private boolean setActivity(@NonNull Activity activity)
     {
         if (activity == null)
             throw new IllegalArgumentException("activity is null");
@@ -49,7 +53,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
 
 
     @Override
-    public final boolean register(Activity activity)
+    public final boolean register(@Nullable Activity activity)
     {
         if (activity == null)
             return false;
@@ -77,6 +81,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         return ActivityEventManager.getInstance().unregister(getActivity(), mCallbackClass, (T) this);
     }
 
+    @NonNull
     private Type getGenericType()
     {
         final Class<?> targetClass = findTargetClass();
@@ -86,6 +91,7 @@ public abstract class BaseEventObserver<T extends ActivityEventCallback> impleme
         return types[0];
     }
 
+    @NonNull
     private Class<?> findTargetClass()
     {
         Class<?> clazz = getClass();
