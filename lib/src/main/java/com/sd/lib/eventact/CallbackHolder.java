@@ -42,11 +42,9 @@ class CallbackHolder
             if (isDebug())
             {
                 final StringBuilder builder = new StringBuilder();
-                builder.append("+++++ add ").append("\r\n");
-                builder.append(clazz.getSimpleName()).append(" -> ").append(callback)
-                        .append("\r\n");
-                builder.append("size:").append(holder.size());
-                builder.append("totalSize:").append(mCallbackHolder.size());
+                builder.append("+++++ add ").append(clazz.getSimpleName()).append(" -> ").append(callback)
+                        .append(" size:").append(holder.size())
+                        .append(" totalSize:").append(mCallbackHolder.size());
                 Log.i(CallbackHolder.class.getName(), builder.toString());
             }
         }
@@ -70,11 +68,9 @@ class CallbackHolder
             if (isDebug())
             {
                 final StringBuilder builder = new StringBuilder();
-                builder.append("----- remove ").append("\r\n");
-                builder.append(clazz.getSimpleName()).append(" -> ").append(callback)
-                        .append("\r\n");
-                builder.append("size:").append(holder.size());
-                builder.append("totalSize:").append(mCallbackHolder.size());
+                builder.append("----- remove ").append(clazz.getSimpleName()).append(" -> ").append(callback)
+                        .append(" size:").append(holder.size())
+                        .append(" totalSize:").append(mCallbackHolder.size());
                 Log.i(CallbackHolder.class.getName(), builder.toString());
             }
         }
