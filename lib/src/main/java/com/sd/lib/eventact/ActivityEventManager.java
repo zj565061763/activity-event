@@ -2,7 +2,6 @@ package com.sd.lib.eventact;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,7 +75,8 @@ public class ActivityEventManager
 
         if (mSystemActivityEventDispatcher == null)
         {
-            mSystemActivityEventDispatcher = new SystemActivityEventDispatcher(activity);
+            final Application application = activity.getApplication();
+            mSystemActivityEventDispatcher = new SystemActivityEventDispatcher(application);
             mSystemActivityEventDispatcher.register();
         }
 
@@ -131,11 +131,11 @@ public class ActivityEventManager
     {
         private final Application mApplication;
 
-        public SystemActivityEventDispatcher(Context context)
+        public SystemActivityEventDispatcher(@NonNull Application application)
         {
-            if (context == null)
-                throw new IllegalArgumentException("context is null");
-            mApplication = (Application) context.getApplicationContext();
+            if (application == null)
+                throw new IllegalArgumentException("application is null");
+            mApplication = application;
         }
 
         public void register()
