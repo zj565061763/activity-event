@@ -49,7 +49,7 @@ public class TestView extends FrameLayout
     private final ActivityResultObserver mActivityResultObserver = new ActivityResultObserver()
     {
         @Override
-        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data)
+        public void onActivityResult(@NonNull Activity activity, int requestCode, int resultCode, @Nullable Intent data)
         {
             Log.i(TAG, "onActivityResult:" + requestCode + "," + resultCode + "," + data);
         }
@@ -58,7 +58,7 @@ public class TestView extends FrameLayout
     private final ActivityDestroyedObserver mActivityDestroyedObserver = new ActivityDestroyedObserver()
     {
         @Override
-        public void onActivityDestroyed(Activity activity)
+        public void onActivityDestroyed(@NonNull Activity activity)
         {
             Log.i(TAG, "onActivityDestroyed");
         }
@@ -67,7 +67,7 @@ public class TestView extends FrameLayout
     private final ActivityTouchEventObserver mActivityTouchEventObserver = new ActivityTouchEventObserver()
     {
         @Override
-        public boolean onActivityDispatchTouchEvent(Activity activity, MotionEvent event)
+        public boolean onActivityDispatchTouchEvent(@NonNull Activity activity, @NonNull MotionEvent event)
         {
             Log.i(TAG, "onActivityDispatchTouchEvent:" + event.getAction());
             return false;
