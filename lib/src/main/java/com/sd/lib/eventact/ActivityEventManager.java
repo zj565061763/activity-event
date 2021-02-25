@@ -221,7 +221,7 @@ public class ActivityEventManager
 
     private final class DefaultActivityEventDispatcher
     {
-        public void dispatch_onCreate(@NonNull Activity activity, @NonNull Bundle savedInstanceState)
+        public void dispatch_onCreate(@NonNull Activity activity, @Nullable Bundle savedInstanceState)
         {
             final Collection<ActivityCreatedCallback> callbacks = getActivityCallbacks(activity, ActivityCreatedCallback.class);
             if (callbacks == null)
