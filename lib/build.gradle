@@ -2,8 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
 def libArtifactId = "activity-event"
-def libVersionCode = 20210205
-def libVersionName = "1.0.1"
+def libVersionCode = 20210226
+def libVersionName = "1.0.2"
 
 android {
     compileSdkVersion 28
