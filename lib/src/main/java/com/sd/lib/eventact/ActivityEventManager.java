@@ -193,7 +193,7 @@ public class ActivityEventManager
     {
         private final Activity mActivity;
 
-        public CustomActivityEventDispatcher(Activity activity)
+        public CustomActivityEventDispatcher(@NonNull Activity activity)
         {
             if (activity == null)
                 throw new IllegalArgumentException("activity is null");
