@@ -59,7 +59,7 @@ class CallbackHolder
         if (holder == null)
             return;
 
-        final String remove = holder.remove(clazz);
+        final String remove = holder.remove(callback);
         if (remove != null)
         {
             if (holder.isEmpty())
